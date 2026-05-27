@@ -1,0 +1,38 @@
+{
+  "name": "ssgyms-logbook",
+  "version": "0.1.0",
+  "description": "Toolcraft CLI and MCP server for the Starting Strength Gyms logbook",
+  "type": "module",
+  "bin": {
+    "ssgyms-logbook": "dist/cli.js",
+    "ssgyms-logbook-mcp": "dist/mcp.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && chmod +x dist/cli.js dist/mcp.js",
+    "prepare": "npm run build",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "playwright-core": "^1.60.0",
+    "toolcraft": "^0.0.20",
+    "toolcraft-schema": "^0.0.20"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.4"
+  }
+}
