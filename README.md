@@ -28,7 +28,7 @@ npm test
 npm link
 ```
 
-Installation compiles the TypeScript CLI/MCP binaries automatically through the package `prepare` script.
+The repository includes compiled CLI/MCP binaries in `dist/`, so GitHub installation does not require TypeScript or a build step on the target machine.
 
 ## Commands
 
