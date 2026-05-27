@@ -1,5 +1,5 @@
 import { S, UserError, defineCommand, defineGroup } from "toolcraft";
-import { createBrowserAuthenticator, type BrowserAuthenticator } from "./browser-login.js";
+import { createOtpAuthenticator, type OtpAuthenticator } from "./auth-login.js";
 import { createSsgymsClient, type SsgymsClient } from "./client.js";
 import { createCredentialProvider, CREDENTIAL_FILE, type CredentialProvider } from "./credentials.js";
 import { buildWorkout, buildWorkoutExercises } from "./workouts.js";
@@ -7,7 +7,7 @@ import { buildWorkout, buildWorkoutExercises } from "./workouts.js";
 export interface LogbookServices {
   client?: SsgymsClient;
   credentials?: CredentialProvider;
-  browserAuthenticator?: BrowserAuthenticator;
+  otpAuthenticator?: OtpAuthenticator;
   readStdin?: () => Promise<string>;
 }
 
@@ -32,7 +32,7 @@ const authSaveParams = S.Object({
   tokenStdin: S.Optional(S.Boolean({ description: "Read the Firebase refresh token from standard input." }))
 });
 const authLoginParams = S.Object({
-  timeoutSeconds: S.Optional(S.Number({ description: "Maximum seconds to wait for browser sign-in.", default: 300, minimum: 1 }))
+  email: S.String({ description: "Email address to receive the SSGYMS verification code." })
 });
 
 const listWorkouts = defineCommand<LogbookServices, "list-workouts", typeof emptyParams, undefined, Awaited<ReturnType<SsgymsClient["listWorkouts"]>>, readonly ["cli", "mcp", "sdk"]>({
@@ -104,14 +104,14 @@ const authSave = defineCommand<LogbookServices, "save", typeof authSaveParams, u
   }
 });
 
-const authLogin = defineCommand<LogbookServices, "login", typeof authLoginParams, undefined, Awaited<ReturnType<BrowserAuthenticator["login"]>>, readonly ["cli"]>({
+const authLogin = defineCommand<LogbookServices, "login", typeof authLoginParams, undefined, Awaited<ReturnType<OtpAuthenticator["login"]>>, readonly ["cli"]>({
   name: "login",
-  description: "Open the SSGYMS sign-in page and securely save the authenticated session.",
+  description: "Send an email code and securely save the authenticated session.",
   scope: ["cli"],
   params: authLoginParams,
   handler: async (ctx) => {
-    const authenticator = ctx.browserAuthenticator ?? createBrowserAuthenticator({ credentials: ctx.credentials });
-    return authenticator.login({ timeoutMs: (ctx.params.timeoutSeconds ?? 300) * 1000 });
+    const authenticator = ctx.otpAuthenticator ?? createOtpAuthenticator({ credentials: ctx.credentials });
+    return authenticator.login({ email: ctx.params.email });
   }
 });
 

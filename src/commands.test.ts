@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { logbook } from "./commands.js";
 import type { SsgymsClient } from "./client.js";
-import type { BrowserAuthenticator } from "./browser-login.js";
+import type { OtpAuthenticator } from "./auth-login.js";
 
 function getCommand(name: string) {
   const command = logbook.children.find((child) => child.kind === "command" && child.name === name);
@@ -45,14 +45,14 @@ describe("workout commands", () => {
 });
 
 describe("auth commands", () => {
-  it("delegates browser-assisted login", async () => {
+  it("delegates terminal email-code login", async () => {
     const auth = logbook.children.find((child) => child.kind === "group" && child.name === "auth");
     if (!auth || auth.kind !== "group") throw new Error("Missing auth group");
     const login = auth.children.find((child) => child.kind === "command" && child.name === "login");
     if (!login || login.kind !== "command") throw new Error("Missing login command");
-    const browserAuthenticator: BrowserAuthenticator = { login: vi.fn(async () => ({ authenticated: true as const, storage: "encrypted-file" as const, userId: "person" })) };
-    await login.handler({ params: { timeoutSeconds: 15 }, browserAuthenticator, secrets: {}, fetch: globalThis.fetch, fs: undefined as never, env: undefined as never, progress: () => undefined } as never);
-    expect(browserAuthenticator.login).toHaveBeenCalledWith({ timeoutMs: 15000 });
+    const otpAuthenticator: OtpAuthenticator = { login: vi.fn(async () => ({ authenticated: true as const, storage: "encrypted-file" as const, userId: "person", email: "person@example.com" })) };
+    await login.handler({ params: { email: "person@example.com" }, otpAuthenticator, secrets: {}, fetch: globalThis.fetch, fs: undefined as never, env: undefined as never, progress: () => undefined } as never);
+    expect(otpAuthenticator.login).toHaveBeenCalledWith({ email: "person@example.com" });
   });
 
   it("stores a token provided over stdin for SSH provisioning", async () => {

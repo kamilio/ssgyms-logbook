@@ -25,7 +25,6 @@
     "node": ">=20"
   },
   "dependencies": {
-    "playwright-core": "^1.60.0",
     "toolcraft": "^0.0.20",
     "toolcraft-schema": "^0.0.20"
   },

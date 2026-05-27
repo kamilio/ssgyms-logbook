@@ -1,5 +1,5 @@
 import { S, UserError, defineCommand, defineGroup } from "toolcraft";
-import { createBrowserAuthenticator } from "./browser-login.js";
+import { createOtpAuthenticator } from "./auth-login.js";
 import { createSsgymsClient } from "./client.js";
 import { createCredentialProvider, CREDENTIAL_FILE } from "./credentials.js";
 import { buildWorkout, buildWorkoutExercises } from "./workouts.js";
@@ -23,7 +23,7 @@ const authSaveParams = S.Object({
     tokenStdin: S.Optional(S.Boolean({ description: "Read the Firebase refresh token from standard input." }))
 });
 const authLoginParams = S.Object({
-    timeoutSeconds: S.Optional(S.Number({ description: "Maximum seconds to wait for browser sign-in.", default: 300, minimum: 1 }))
+    email: S.String({ description: "Email address to receive the SSGYMS verification code." })
 });
 const listWorkouts = defineCommand({
     name: "list-workouts",
@@ -91,12 +91,12 @@ const authSave = defineCommand({
 });
 const authLogin = defineCommand({
     name: "login",
-    description: "Open the SSGYMS sign-in page and securely save the authenticated session.",
+    description: "Send an email code and securely save the authenticated session.",
     scope: ["cli"],
     params: authLoginParams,
     handler: async (ctx) => {
-        const authenticator = ctx.browserAuthenticator ?? createBrowserAuthenticator({ credentials: ctx.credentials });
-        return authenticator.login({ timeoutMs: (ctx.params.timeoutSeconds ?? 300) * 1000 });
+        const authenticator = ctx.otpAuthenticator ?? createOtpAuthenticator({ credentials: ctx.credentials });
+        return authenticator.login({ email: ctx.params.email });
     }
 });
 const authStatus = defineCommand({

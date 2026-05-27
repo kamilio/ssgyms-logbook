@@ -1,10 +1,10 @@
-import { type BrowserAuthenticator } from "./browser-login.js";
+import { type OtpAuthenticator } from "./auth-login.js";
 import { type SsgymsClient } from "./client.js";
 import { type CredentialProvider } from "./credentials.js";
 export interface LogbookServices {
     client?: SsgymsClient;
     credentials?: CredentialProvider;
-    browserAuthenticator?: BrowserAuthenticator;
+    otpAuthenticator?: OtpAuthenticator;
     readStdin?: () => Promise<string>;
 }
 export declare const logbook: import("toolcraft").Group<LogbookServices> & {
@@ -48,18 +48,18 @@ export declare const logbook: import("toolcraft").Group<LogbookServices> & {
         }, readonly ["cli", "mcp", "sdk"], undefined>;
     }, import("toolcraft").Group<LogbookServices> & {
         readonly __agentKitGroupTypeInfo: import("toolcraft").GroupTypeInfo<LogbookServices, "auth", readonly [import("toolcraft").Command<LogbookServices, import("toolcraft-schema").ObjectSchema<{
-            readonly timeoutSeconds: import("toolcraft-schema").OptionalSchema<import("toolcraft-schema").NumberSchema>;
+            readonly email: import("toolcraft-schema").StringSchema;
         }>, undefined, {
             authenticated: true;
-            email?: string;
+            email: string;
             storage: "encrypted-file";
             userId: string;
         }> & {
             readonly __agentKitCommandTypeInfo: import("toolcraft").CommandTypeInfo<"login", import("toolcraft-schema").ObjectSchema<{
-                readonly timeoutSeconds: import("toolcraft-schema").OptionalSchema<import("toolcraft-schema").NumberSchema>;
+                readonly email: import("toolcraft-schema").StringSchema;
             }>, {
                 authenticated: true;
-                email?: string;
+                email: string;
                 storage: "encrypted-file";
                 userId: string;
             }, readonly ["cli"], undefined>;
