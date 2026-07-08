@@ -1,7 +1,18 @@
 {
-  "name": "ssgyms-logbook",
+  "name": "@kamilio/ssgyms-logbook",
   "version": "0.1.0",
   "description": "Toolcraft CLI and MCP server for the Starting Strength Gyms logbook",
+  "homepage": "https://github.com/kamilio/ssgyms-logbook#readme",
+  "bugs": {
+    "url": "https://github.com/kamilio/ssgyms-logbook/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamilio/ssgyms-logbook.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "bin": {
     "ssgyms-logbook": "dist/cli.js",
