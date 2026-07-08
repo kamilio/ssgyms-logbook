@@ -2,23 +2,23 @@
 
 Toolcraft-based CLI and MCP stdio server for `app.ssgyms.com/logbook`.
 
-## Install From GitHub
+## Install
 
 Requires Node.js 20+ and npm.
 
 ```sh
-npm install -g https://github.com/kamilio/ssgyms-logbook/archive/refs/heads/main.tar.gz
+npm install -g @kamilio/ssgyms-logbook
 ssgyms-logbook --help
 ssgyms-logbook-mcp --help
 ```
 
-This installs directly from the GitHub repository archive and was verified with npm. To pin an installation to a particular revision, replace `refs/heads/main` with a commit SHA archive path, for example:
+To install the current checkout instead of the published package:
 
 ```sh
-npm install -g https://github.com/kamilio/ssgyms-logbook/archive/<commit-sha>.tar.gz
+npm install
+npm run build
+npm install -g --ignore-scripts .
 ```
-
-Avoid npm git dependency forms such as `git+ssh://...` or `github:kamilio/ssgyms-logbook` for global installation: npm may create executable shims pointing at an evicted temporary git checkout instead of a stable package directory.
 
 For local development from a clone:
 
