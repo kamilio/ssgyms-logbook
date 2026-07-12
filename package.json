@@ -36,8 +36,8 @@
     "node": ">=20"
   },
   "dependencies": {
-    "toolcraft": "^0.0.20",
-    "toolcraft-schema": "^0.0.20"
+    "toolcraft": "^0.0.131",
+    "toolcraft-schema": "^0.0.131"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
